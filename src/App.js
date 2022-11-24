@@ -7,7 +7,6 @@ function App() {
     <div data-theme="light" className='min-h-screen'>
       <div className='max-w-screen-xl  mx-auto xl:p-0 px-5 '>
         <RouterProvider router={router} />
-
       </div>
     </div>
   );
