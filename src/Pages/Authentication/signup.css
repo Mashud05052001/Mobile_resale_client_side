@@ -1,0 +1,11 @@
+.profilePicture::-webkit-file-upload-button {
+    padding: 8px 8px;
+    margin: -10px 0;
+    height: 58px;
+    border: 0;
+    border-radius: 10px 0px 0px 10px;
+    margin-right: 10px;
+    cursor: pointer;
+    color: #9ca3af;
+    background: rgb(243, 243, 243);
+}

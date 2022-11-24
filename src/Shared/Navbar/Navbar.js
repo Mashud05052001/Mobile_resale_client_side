@@ -43,7 +43,7 @@ const Navbar = () => {
         {
             !user &&
             <li className='px-1'>
-                <NavLink to='/login' className={({ isActive }) => isActive ? 'activeNavbarItems' : 'inActiveNavbarItems '}>
+                <NavLink to='/authentications' className={({ isActive }) => isActive ? 'activeNavbarItems' : 'inActiveNavbarItems '}>
                     <button className='rounded-md  xl:font-semibold  -mx-3  px-2 lg:px-7 '>Login</button>
                 </NavLink>
             </li>
@@ -83,7 +83,7 @@ const Navbar = () => {
         {
             !user &&
             <li className='px-1'>
-                <NavLink to='/login' onClick={() => setOpen(false)} >
+                <NavLink to='/authentications' onClick={() => setOpen(false)} >
                     <button className='rounded-md  -mx-3  px-2'>Login</button>
                 </NavLink>
             </li>
@@ -124,7 +124,7 @@ const Navbar = () => {
                                 {mininavbarItems}
                             </ul>
                             :
-                            <ul className='absolute top-[55px] opacity-0 z-10 duration-100 -right-1.5 bg-base-100 menu-vertical menu mt-3 p-2 shadow menu-compact dropdown-content  rounded-box w-52'>
+                            <ul className='absolute top-[55px] opacity-0 -z-10 duration-100 -right-1.5 bg-base-100 menu-vertical menu mt-3 p-2 shadow menu-compact dropdown-content  rounded-box w-52'>
                                 {mininavbarItems}
                             </ul>
                     }
