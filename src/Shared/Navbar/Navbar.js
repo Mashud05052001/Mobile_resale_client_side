@@ -8,8 +8,11 @@ import { AuthContext } from '../../Context/UserContext';
 
 
 const Navbar = () => {
-    const { user, loading } = useContext(AuthContext);
+    const { user, loading, logout } = useContext(AuthContext);
     const [isOpen, setOpen] = useState(false)
+    const handleLogout = () => {
+        logout().then(result => result).catch(error => console.log(error))
+    }
     const navbarItems = <>
         <li className='px-1'>
             <NavLink to='/' className={({ isActive }) => isActive ? 'activeNavbarItems' : 'inActiveNavbarItems '}>
@@ -43,7 +46,7 @@ const Navbar = () => {
         {
             !user &&
             <li className='px-1'>
-                <NavLink to='/authentications' className={({ isActive }) => isActive ? 'activeNavbarItems' : 'inActiveNavbarItems '}>
+                <NavLink to='/authentications/login' className={({ isActive }) => isActive ? 'activeNavbarItems' : 'inActiveNavbarItems '}>
                     <button className='rounded-md  xl:font-semibold  -mx-3  px-2 lg:px-7 '>Login</button>
                 </NavLink>
             </li>
@@ -83,7 +86,7 @@ const Navbar = () => {
         {
             !user &&
             <li className='px-1'>
-                <NavLink to='/authentications' onClick={() => setOpen(false)} >
+                <NavLink to='/authentications/login' onClick={() => setOpen(false)} >
                     <button className='rounded-md  -mx-3  px-2'>Login</button>
                 </NavLink>
             </li>
@@ -108,12 +111,12 @@ const Navbar = () => {
                     <div className=" dropdown dropdown-end ml-5">
                         <label tabIndex={0} className="btn btn-ghost btn-circle avatar" onClick={() => setOpen(false)}>
                             <div className="w-10 rounded-full">
-                                <img src="https://placeimg.com/80/80/people" alt='' />
+                                <img src={user.photoURL} alt='' />
                             </div>
                         </label>
                         <ul tabIndex={0} className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">
                             <li><Link>Settings</Link></li>
-                            <li><Link>Logout</Link></li>
+                            <li onClick={handleLogout}><Link>Logout</Link></li>
                         </ul>
                     </div>}
                 <div className="pl-4 pr-2 lg:hidden relative">
