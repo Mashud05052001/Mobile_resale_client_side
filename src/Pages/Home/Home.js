@@ -1,9 +1,12 @@
 import React from 'react';
+import HomeBanner from './HomeBanner/HomeBanner';
+import HomeCategories from './HomeCategories.js/HomeCategories';
 
 const Home = () => {
     return (
         <div>
-            this is home section
+            <HomeBanner />
+            <HomeCategories />
         </div>
     );
 };

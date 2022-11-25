@@ -4,9 +4,12 @@ import Main from "../Outlet/Main";
 import Login from "../Pages/Authentication/Login";
 import Signup from "../Pages/Authentication/Signup";
 import Blogs from "../Pages/Blogs/Blogs";
-import Categories from "../Pages/Categories/Categories";
+import Categories from "../Outlet/Categories";
 import Home from "../Pages/Home/Home";
 import ErrorPage from "../Shared/ErrorPage/ErrorPage";
+import SingleCategoryAllAdds from "../Pages/Categories/SingleCategory/SingleCategoryAllAdds";
+import Dashboard from "../Outlet/Dashboard";
+import AllProducts from "../Pages/Dashboard/AllProducts";
 
 
 export const router = createBrowserRouter([
@@ -56,6 +59,32 @@ export const router = createBrowserRouter([
                 path: '/authentications/signup',
                 element: <Signup />
             },
+        ]
+    },
+    {
+        path: '/categories',
+        element: <Categories />,
+        errorElement: <ErrorPage />,
+        children: [
+            {
+                path: '/categories/',
+                element: <SingleCategoryAllAdds />
+            },
+            {
+                path: '/categories/:id',
+                element: <SingleCategoryAllAdds />
+            }
+        ]
+    },
+    {
+        path: '/dashboard',
+        element: <Dashboard />,
+        errorElement: <ErrorPage />,
+        children: [
+            {
+                path: '/dashboard',
+                element: <AllProducts />
+            }
         ]
     }
 ])

@@ -17,11 +17,11 @@ const Authentications = () => {
 
     // userinfo added while login vie google and github
     const addUserToDB = (user, from) => {
+        console.log(user)
         const userInfo = {
             name: user?.displayName,
             email: user?.email,
             image: user?.photoURL,
-            number: user?.phoneNumber,
             role: 'buyer',
             joinFrom: from
         }
@@ -41,8 +41,9 @@ const Authentications = () => {
         event.preventDefault();
         googleJoin()
             .then(result => {
+                console.log(result.user)
                 if (result?.user) {
-                    addUserToDB(result.user, "Google");
+                    // addUserToDB(result.user, "Google");
                 }
             })
             .catch(error => console.log(error.message))

@@ -1,0 +1,66 @@
+[
+    {
+        "name": "Samsung",
+        "image": "https://i.ibb.co/fQyZJkY/samsung.png"
+    },
+    {
+        "name": "Apple",
+        "image": "https://i.ibb.co/r6V3RzL/apple.png"
+    },
+    {
+        "name": "Huawei",
+        "image": "https://i.ibb.co/3MkLJJ4/huawei.png"
+    },
+    {
+        "name": "Xiaomi",
+        "image": "https://i.ibb.co/D1hvJxC/xiomi.png"
+    },
+    {
+        "name": "Oppo",
+        "image": "https://i.ibb.co/9rqs5WD/oppo.webp"
+    },
+    {
+        "name": "Vivo",
+        "image": "https://i.ibb.co/RhKrMTV/vivo.png"
+    },
+    {
+        "name": "Motorola",
+        "image": "https://i.ibb.co/ckTvjfF/motorola-1.png"
+    },
+    {
+        "name": "Lenovo",
+        "image": "https://i.ibb.co/Wnw0Zqc/lenovo.png"
+    },
+    {
+        "name": "LG",
+        "image": "https://i.ibb.co/NFfyq0q/lg.png"
+    },
+    {
+        "name": "Realme",
+        "image": "https://i.ibb.co/3vQhs9C/realme.webp"
+    },
+    {
+        "name": "HTC",
+        "image": "https://i.ibb.co/b1Sxxdz/htc.png"
+    },
+    {
+        "name": "Techno Mobile",
+        "image": "https://i.ibb.co/F02nRGq/techno.png"
+    },
+    {
+        "name": "Sony",
+        "image": "https://i.ibb.co/1ZyGjrq/sony.png"
+    },
+    {
+        "name": "ZTE",
+        "image": ""
+    },
+    {
+        "name": "BlackBerry",
+        "image": "https://i.ibb.co/Mh6mH5R/blackberry.png"
+    },
+    {
+        "name": "Nokia",
+        "image": "https://i.ibb.co/f1568cq/nokia.png"
+    }
+]
