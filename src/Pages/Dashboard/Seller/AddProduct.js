@@ -1,12 +1,16 @@
 import { format } from 'date-fns/esm';
 import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../Context/UserContext';
 import { useAuser } from '../../../CustomHook/useAuser';
+import Loading2 from '../../../Shared/Amination/Loading2';
 
 const AddProduct = () => {
     const { user } = useContext(AuthContext);
     const [userInfo, setUserInfo] = useState(null);
+    const navigate = useNavigate();
     // console.log(user?.email, user?.providerData[0]?.providerId);
     const sellerInfo = useAuser(user?.email, user?.providerData[0]?.providerId)
     // console.log(sellerInfo)
@@ -20,7 +24,9 @@ const AddProduct = () => {
             .then(data => {
                 setCategories(data);
                 setIsLoading(false);
+                // setIsLoading(true);
             })
+            .catch(err => setError(err));
     }, [])
 
     const formData = new FormData();
@@ -28,7 +34,7 @@ const AddProduct = () => {
     // console.log(categories)
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = data => {
-        console.log(1)
+        setIsLoading(true);
         const img = data.image[0];
         formData.append('image', img);
         fetch(imgbbUrl, { method: "POST", body: formData })
@@ -42,7 +48,7 @@ const AddProduct = () => {
                     data["uploadDate"] = date;
                     data["sellerName"] = sellerInfo?.name;
                     data["sellerDbId"] = sellerInfo?._id;
-                    console.log(data)
+                    // console.log(data)
                     fetch(`${process.env.REACT_APP_server_url}/allPhones`, {
                         method: "POST",
                         headers: {
@@ -52,14 +58,27 @@ const AddProduct = () => {
                         body: JSON.stringify(data)
                     })
                         .then(res => res.json)
-                        .then(data => console.log(data));
+                        .then(data => {
+                            if (data) {
+                                setIsLoading(false);
+                                toast.success('You have successfully add a products');
+                                navigate('/dashboard/products');
+                            }
+                        }).catch(err => setError(err));
                 }
-            })
+            }).catch(err => setError(err));
 
     }
     return (
         <div className='mb-20'>
-            <form onSubmit={handleSubmit(onSubmit)} className={`mb-6 ${isLoading ? 'opacity-60 ' : 'opacity-100'}`}>
+            {
+                isLoading &&
+                <div>
+                    <Loading2 />
+                </div>
+
+            }
+            <form onSubmit={handleSubmit(onSubmit)} className={`mb-6 ${isLoading ? 'opacity-40  -mt-[275px]' : 'opacity-100'}`}>
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-3 mt-5'>
                     <div className="form-control">
                         <label className="label">
@@ -207,9 +226,6 @@ const AddProduct = () => {
 
                 </div>
 
-
-
-
                 <div className=' label-text-alt mt-4 '>
                     <p className='ml-1 text-red-600'>
                         {
@@ -225,6 +241,7 @@ const AddProduct = () => {
 
 
             </form>
+
         </div>
     );
 };
