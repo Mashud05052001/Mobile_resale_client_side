@@ -14,6 +14,7 @@ const Categories = () => {
             return data;
         }
     })
+    // console.log(categories.sort(() => Math.random() - Math.random()).slice(0, 5));
     return (
         <div>
             <Navbar />

@@ -21,7 +21,8 @@ const HomeCategories = () => {
                     <Loading2 />
                     :
                     <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 mt-10  gap-x-5 gap-y-0 md:gap-y-12'>
-                        {categories.map((item, i) =>
+                        {/* categories.sort(() => Math.random() - Math.random()).slice(0, 5).map((item, i) */}
+                        {categories.slice(0, 5).map((item, i) =>
                             <Link to={`/categories/${item._id}`} key={i} className='btn h-56 btn-ghost hover:bg-primary/50 rounded-xl'>
                                 <div className='text-center mx-auto '>
                                     <div >

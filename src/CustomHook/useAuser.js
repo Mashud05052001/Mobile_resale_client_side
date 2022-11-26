@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react"
 
-export const useRole = (email, joinfrom) => {
-    const [role, setRole] = useState('');
-    const [isRoleLoading, setIsRoleLoading] = useState(true);
+export const useAuser = (email, joinfrom) => {
+    const [user, setUser] = useState('');
     useEffect(() => {
         if (email && joinfrom) {
             fetch(`${process.env.REACT_APP_server_url}/users?email=${email}&joinfrom=${joinfrom}`, {
@@ -12,10 +11,10 @@ export const useRole = (email, joinfrom) => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    setRole(data.role);
-                    setIsRoleLoading(false);
+                    // console.log(data)
+                    setUser(data);
                 })
         }
     }, [email, joinfrom])
-    return [role, isRoleLoading];
+    return user;
 }

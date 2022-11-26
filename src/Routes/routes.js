@@ -91,6 +91,8 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: '/dashboard',
+                // element: <AllSeller />
+                element: <MyProducts />
             },
             {
                 path: '/dashboard/allSeller',

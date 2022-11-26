@@ -34,8 +34,15 @@ const Login = () => {
             })
             .catch(error => {
                 setError(error.message)
+                console.log(error.message);
                 if (error.message === "Firebase: Error (auth/user-not-found).") {
                     setError('User Not Found On This Email Account')
+                }
+                else if (error.message === "Firebase: Error (auth/wrong-password).") {
+                    setError('Wrong Password')
+                }
+                else if (error.message === "Firebase: Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. (auth/too-many-requests).") {
+                    setError('Your email is temporary blocked. Please try again after sometime or reset your password.');
                 }
                 setIsLoading(false);
             })

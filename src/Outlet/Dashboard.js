@@ -8,12 +8,12 @@ const Dashboard = () => {
     const { user } = useContext(AuthContext);
     // console.log(user?.email, user?.reloadUserInfo?.providerUserInfo[0]?.providerId)
     const [role, isRoleLoading] = useRole(user?.email, user?.reloadUserInfo?.providerUserInfo[0]?.providerId)
-    console.log(role, isRoleLoading)
+    // console.log(role, isRoleLoading)
 
     return (
         <section>
             <Navbar />
-            <div>
+            <div className='px-5 border-2 rounded-xl mb-5'>
                 {
                     role === 'admin' &&
                     <div className='text-center grid grid-cols-3 font-semibold -mx-5'>

@@ -3,16 +3,25 @@ import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import googleIcon from '../media/Images/Icon/google.png'
 import githubIcon from '../media/Images/Icon/github.png'
-import { Link, NavLink, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Navbar from '../Shared/Navbar/Navbar';
 import { AuthContext } from '../Context/UserContext';
 import Loading from '../Shared/Amination/Loading';
+import { useJwtToken } from '../CustomHook/useJwtToken';
+import toast from 'react-hot-toast';
 
 const Authentications = () => {
     const [error, setError] = useState('');
-
+    const [jwtTokenEmail, setJwtTokenEmail] = useState(null);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
     const { googleJoin, githubJoin } = useContext(AuthContext);
-
+    const token = useJwtToken(jwtTokenEmail);
+    if (token) {
+        navigate(from, { replace: true });
+        toast.success('You Have successfully SignUp')
+    }
 
     // userinfo added while login vie google and github
     const addUserToDB = (user, from) => {
@@ -33,16 +42,18 @@ const Authentications = () => {
         })
             .then(res => res.json())
             .then(data => {
+                console.log('mahi', data)
                 // console.log(data)
             })
     }
     const handleGoogle = event => {
         event.preventDefault();
         googleJoin()
-            .then(result => {
-                console.log(result.user)
-                if (result?.user) {
-                    addUserToDB(result.user, result?.user?.reloadUserInfo?.providerUserInfo[0]?.providerId);
+            .then(data => {
+                console.log(data.user)
+                if (data?.user) {
+                    setJwtTokenEmail(data?.user?.email);
+                    addUserToDB(data.user, data?.user?.reloadUserInfo?.providerUserInfo[0]?.providerId);
                 }
             })
             .catch(error => console.log(error.message))
@@ -50,9 +61,9 @@ const Authentications = () => {
     const handleGithub = event => {
         event.preventDefault();
         githubJoin()
-            .then(result => {
-                if (result?.user) {
-                    addUserToDB(result.user, result?.user?.reloadUserInfo?.providerUserInfo[0]?.providerId);
+            .then(data => {
+                if (data?.user) {
+                    addUserToDB(data.user, data?.user?.reloadUserInfo?.providerUserInfo[0]?.providerId);
                 }
             })
             .catch(error => console.log(error.message))
