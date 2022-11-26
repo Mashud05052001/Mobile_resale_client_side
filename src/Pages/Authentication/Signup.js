@@ -6,6 +6,7 @@ import toast from 'react-hot-toast'
 import './signup.css';
 import Loading from '../../Shared/Amination/Loading';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useJwtToken } from '../../CustomHook/useJwtToken';
 
 const Signup = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -16,6 +17,13 @@ const Signup = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
+    const [jwtTokenEmail, setJwtTokenEmail] = useState(null);
+    const token = useJwtToken(jwtTokenEmail);
+    if (token) {
+        setIsLoading(false);
+        navigate(from, { replace: true });
+        toast.success('You Have successfully SignUp')
+    }
     const onSubmit = data => {
         const img = data.img[0];
         setError('');
@@ -59,7 +67,7 @@ const Signup = () => {
                 email: data?.email,
                 image: image,
                 role: data?.role,
-                joinFrom: "Sign-Up",
+                joinFrom: "password",
             }
             fetch(`${process.env.REACT_APP_server_url}/users`, {
                 method: "POST",
@@ -70,12 +78,9 @@ const Signup = () => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    if (data.acknowledged) {
-                        setIsLoading(false);
-                        navigate(from, { replace: true });
-                        toast.success('You Have successfully SignUp')
+                    if (data.result.acknowledged) {
+                        setJwtTokenEmail(data.email);
                     }
-                    // console.log(data)
                 })
         }
 
@@ -152,8 +157,8 @@ const Signup = () => {
                         <select className="select select-bordered w-full font-normal max-w-xs"
                             {...register('role')} required
                         >
-                            <option value='Buyer'>Buyer</option>
-                            <option value='Seller'>Seller</option>
+                            <option value='buyer'>Buyer</option>
+                            <option value='seller'>Seller</option>
 
                         </select>
                     </div>

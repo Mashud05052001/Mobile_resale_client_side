@@ -9,7 +9,6 @@ import { AuthContext } from '../Context/UserContext';
 import Loading from '../Shared/Amination/Loading';
 
 const Authentications = () => {
-    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
 
     const { googleJoin, githubJoin } = useContext(AuthContext);
@@ -43,7 +42,7 @@ const Authentications = () => {
             .then(result => {
                 console.log(result.user)
                 if (result?.user) {
-                    // addUserToDB(result.user, "Google");
+                    addUserToDB(result.user, result?.user?.reloadUserInfo?.providerUserInfo[0]?.providerId);
                 }
             })
             .catch(error => console.log(error.message))
@@ -53,7 +52,7 @@ const Authentications = () => {
         githubJoin()
             .then(result => {
                 if (result?.user) {
-                    addUserToDB(result.user, "GitHub");
+                    addUserToDB(result.user, result?.user?.reloadUserInfo?.providerUserInfo[0]?.providerId);
                 }
             })
             .catch(error => console.log(error.message))

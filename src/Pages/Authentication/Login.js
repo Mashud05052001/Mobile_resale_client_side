@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context/UserContext';
 import toast from 'react-hot-toast'
 import Loading from '../../Shared/Amination/Loading';
+import { useJwtToken } from '../../CustomHook/useJwtToken';
 
 
 const Login = () => {
@@ -16,14 +17,20 @@ const Login = () => {
     const from = location.state?.from?.pathname || "/";
     const { login } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const onSubmit = data => {
+    // working on jwt
+    const [jwtTokenEmail, setJwtTokenEmail] = useState(null);
+    const token = useJwtToken(jwtTokenEmail);
+    if (token) {
+        setIsLoading(false)
+        navigate(from, { replace: true });
+        toast.success('You have successfully login our website')
+    }
+    const onSubmit = (data) => {
         setError("");
         setIsLoading(true);
         login(data.email, data.password)
             .then(result => {
-                setIsLoading(false)
-                navigate(from, { replace: true });
-                toast.success('You have successfully login our website')
+                setJwtTokenEmail(result.user.email);
             })
             .catch(error => {
                 setError(error.message)
