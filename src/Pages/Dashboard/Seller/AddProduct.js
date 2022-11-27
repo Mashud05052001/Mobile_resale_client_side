@@ -52,6 +52,7 @@ const AddProduct = () => {
                     data["sellerName"] = sellerInfo?.name;
                     data["sellerDbId"] = sellerInfo?._id;
                     data['categoryId'] = categoryId;
+                    console.log(data)
                     fetch(`${process.env.REACT_APP_server_url}/allPhones`, {
                         method: "POST",
                         headers: {
@@ -201,7 +202,7 @@ const AddProduct = () => {
                     </label>
                     <textarea type="text" placeholder="White the full detailes here..."
                         className="textarea textarea-bordered" required
-                        {...register('sellingReason')} rows='4'
+                        {...register('detailes')} rows='4'
                     />
                 </div>
                 <div>
