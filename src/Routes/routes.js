@@ -9,7 +9,6 @@ import Home from "../Pages/Home/Home";
 import ErrorPage from "../Shared/ErrorPage/ErrorPage";
 import SingleCategoryAllAdds from "../Pages/Categories/SingleCategory/SingleCategoryAllAdds";
 import Dashboard from "../Outlet/Dashboard";
-import AllProducts from "../Pages/Dashboard/AllProducts";
 import AllSeller from "../Pages/Dashboard/Admin/AllSeller";
 import AllBuyer from "../Pages/Dashboard/Admin/AllBuyer";
 import ReportedItems from "../Pages/Dashboard/Admin/ReportedItems";
@@ -18,6 +17,8 @@ import MyWishList from "../Pages/Dashboard/Buyer/MyWishList";
 import AddProduct from "../Pages/Dashboard/Seller/AddProduct";
 import MyBuyers from "../Pages/Dashboard/Seller/MyBuyers";
 import MyProducts from "../Pages/Dashboard/Seller/MyProducts";
+import AllProducts from "../Pages/Categories/AllProducts/AllProducts";
+import SingleProduct from "../Pages/Categories/SingleProduct/SingleProduct";
 
 
 export const router = createBrowserRouter([
@@ -29,10 +30,6 @@ export const router = createBrowserRouter([
             {
                 path: '/',
                 element: <Home />
-            },
-            {
-                path: '/categories',
-                element: <Categories />,
             },
             {
                 path: '/about',
@@ -75,13 +72,17 @@ export const router = createBrowserRouter([
         errorElement: <ErrorPage />,
         children: [
             {
-                path: '/categories/',
-                element: <SingleCategoryAllAdds />
+                path: '/categories',
+                element: <AllProducts />
             },
             {
                 path: '/categories/:id',
-                element: <SingleCategoryAllAdds />
-            }
+                element: <SingleCategoryAllAdds />,
+            },
+            {
+                path: '/categories/singlePhone/:id',
+                element: <SingleProduct />,
+            },
         ]
     },
     {

@@ -34,6 +34,9 @@ const AddProduct = () => {
     // console.log(categories)
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = data => {
+        console.log(data.model);
+        const modelCategoryInfo = categories.find(item => item.name === data.model)
+        const categoryId = modelCategoryInfo._id;
         setIsLoading(true);
         const img = data.image[0];
         formData.append('image', img);
@@ -48,7 +51,7 @@ const AddProduct = () => {
                     data["uploadDate"] = date;
                     data["sellerName"] = sellerInfo?.name;
                     data["sellerDbId"] = sellerInfo?._id;
-                    // console.log(data)
+                    data['categoryId'] = categoryId;
                     fetch(`${process.env.REACT_APP_server_url}/allPhones`, {
                         method: "POST",
                         headers: {

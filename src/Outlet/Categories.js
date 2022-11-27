@@ -26,12 +26,12 @@ const Categories = () => {
                         <div className=''>
                             <div className='flex flex-wrap'>
                                 {categories.map((item, i) =>
-                                    <NavLink key={i} to={`/categories/${item._id}`}
+                                    <NavLink key={i} to={`/categories/${item._id}?name=${item.name}`}
                                         // className=''
                                         className={({ isActive }) => isActive ?
-                                            'btn btn-sm  btn-ghost hover:bg-primary/50 rounded-xl'
+                                            'px-3 py-2  btn-ghost hover:bg-primary/40 font-medium rounded-md'
                                             :
-                                            'btn btn-sm  btn-ghost hover:bg-primary/50 rounded-xl'
+                                            'px-3 py-2 btn-ghost hover:bg-primary/40 font-medium rounded-md'
                                         }
                                     >
                                         <div className='text-center mx-auto '>
