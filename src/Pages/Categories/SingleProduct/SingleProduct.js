@@ -7,6 +7,9 @@ import ModalForBuyProduct from './ModalForBuyProduct/ModalForBuyProduct';
 import { AuthContext } from '../../../Context/UserContext';
 import toast from 'react-hot-toast';
 import { MdOutlineReport } from 'react-icons/md';
+import ConfirmationModal from '../../../Shared/Modal/ConfirmationModal';
+import Swal from 'sweetalert2';
+import { useAuser } from '../../../CustomHook/useAuser';
 
 const SingleProduct = () => {
     const [phoneInfo, setPhoneInfo] = useState({});
@@ -16,6 +19,8 @@ const SingleProduct = () => {
     const phoneId = useParams().id;
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
+    // receiving the phone information
+    const customerInfo = useAuser(user?.email, user?.providerData[0]?.providerId);
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_server_url}/singlePhone/${phoneId}`, {
             headers: {
@@ -42,6 +47,7 @@ const SingleProduct = () => {
     if (uploadDate) {
         sortDate = uploadDate.slice(0, 12);
     }
+    // handling the order section
     const handleBuy = () => {
         if (sellerInfo.name === user?.displayName && sellerInfo.name === user?.displayName) {
             toast.error("You cann't buy your own product. If you want you can delete this product from dashboard");
@@ -50,38 +56,83 @@ const SingleProduct = () => {
             setShowModal(true);
         }
     }
+    // handling the wiselist section
     const handleWiseList = () => {
         if (sellerInfo.name === user?.displayName && sellerInfo.name === user?.displayName) {
             toast.error("You cann't add your own product in your wiselist. If you want you can delete this product from dashboard");
         }
         else {
-            console.log(1)
+            const information = {
+                userName: user?.displayName,
+                userEmail: user?.email,
+                userId: customerInfo?._id,
+                phone: name,
+                phoneId: phoneInfo?._id,
+                price: phoneInfo?.sellingPrice,
+                soldStatus: false,
+            }
+
+            Swal.fire({
+                title: 'Do you want to add this phone on your wiselist?',
+                showCancelButton: true,
+                confirmButtonText: 'OK',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`${process.env.REACT_APP_server_url}/wiseList`, {
+                        method: "POST",
+                        headers: {
+                            authorization: `bearer ${localStorage.getItem('token')}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(information)
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.acknowledged) {
+                                toast.success('You have successfully added this item to your wiselist');
+                                // setShowModal(null);
+                            }
+                            else if (data.message === 'alreadyAdded') {
+                                toast.error("You cann't add same item multiple time. Please check your wiselist to buy.");
+                                // setShowModal(null);
+                            }
+                        })
+                }
+            })
         }
     }
-    // console.log(sellerInfo)
-    // console.log(user?.email, user?.displayName)
-    // console.log(phoneInfo)
+    // report handeling
     const handleReport = (id) => {
         if (sellerInfo.name === user?.displayName && sellerInfo.name === user?.displayName) {
             toast.error("You can't report on your item");
         }
         else {
-            const confirm = window.confirm('Are you sure to add a report on this product?')
-            if (confirm) {
-                console.log(id)
-                fetch(`${process.env.REACT_APP_server_url}/allPhones?id=${id}`, {
-                    method: "PATCH",
-                })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.acknowledged) {
-                            toast.success('You have successfully report on this item.')
-                            navigate('/categories');
+            Swal.fire({
+                title: 'Do you want to make a report on this item?',
+                showCancelButton: true,
+                confirmButtonText: 'OK',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`${process.env.REACT_APP_server_url}/allPhones?id=${id}`, {
+                        method: "PATCH",
+                        headers: {
+                            authorization: `bearer ${localStorage.getItem('token')}`,
                         }
-                    });
-            }
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.acknowledged) {
+                                toast.success('You have successfully report on this item.')
+                                navigate('/categories');
+                            }
+                        });
+                }
+            })
         }
     }
+    // console.log(sellerInfo)
+    // console.log(user?.email, user?.displayName)
+    // console.log(phoneInfo)
     return (
         <>
             {
@@ -168,7 +219,7 @@ const SingleProduct = () => {
             {
                 showModal &&
                 <ModalForBuyProduct userName={user?.displayName} userEmail={user?.email}
-                    phone={name} price={sellingPrice} setShowModal={setShowModal}
+                    phone={name} price={sellingPrice} setShowModal={setShowModal} phoneId={phoneInfo?._id} userId={customerInfo?._id}
                 />
             }
         </>

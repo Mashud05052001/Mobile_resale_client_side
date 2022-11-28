@@ -5,6 +5,7 @@ import Loading from '../Shared/Amination/Loading';
 import Loading2 from '../Shared/Amination/Loading2';
 import Navbar from '../Shared/Navbar/Navbar';
 import '../Shared/Navbar/navbar.css'
+import Footer from '../Shared/Footer/Footer';
 const Categories = () => {
     const { data: categories = [], isLoading, refetch } = useQuery({
         queryKey: ['categories'],
@@ -44,6 +45,7 @@ const Categories = () => {
                 }
             </section>
             <Outlet />
+
         </div>
     );
 };

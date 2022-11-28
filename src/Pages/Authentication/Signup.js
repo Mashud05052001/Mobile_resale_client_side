@@ -1,12 +1,14 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { BsInfoLg } from 'react-icons/bs';
 import { AuthContext } from '../../Context/UserContext';
 import toast from 'react-hot-toast'
 import './signup.css';
 import Loading from '../../Shared/Amination/Loading';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useJwtToken } from '../../CustomHook/useJwtToken';
+import Swal from 'sweetalert2';
 
 const Signup = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -24,42 +26,62 @@ const Signup = () => {
         navigate(from, { replace: true });
         toast.success('You Have successfully SignUp')
     }
+    const showPasswordInformation = () => {
+        Swal.fire({
+            title: 'Setting Password Conditions',
+            html:
+                '<ul> <li>Password & Confirm Password must be same.<li>Password Length Must be between (8-30) characters.</li><li>Password should be contain atleast 1 uppercase alphabet, 1 number & 1 special symbol</li></ul>',
+            showClass: {
+                popup: ''
+            },
+            hideClass: {
+                popup: ''
+            }
+        })
+    }
     const onSubmit = data => {
         const img = data.img[0];
         setError('');
-        setIsLoading(true);
+        // setIsLoading(true);
         // creating imageURL
 
+        if (data.password !== data.confirmPassword) { setError('Password Doesn\'t Matched'); return; }
+        if (data.password.length < 8 || data.password.length > 30) { setError('Password length must be 8-30 alphabet'); return; }
+        if (!/(?=.*?[A-Z])/.test(data.password)) { setError('Password must have 1 UpperCase Word'); return; }
+        if (!/(?=.*?[0-9])/.test(data.password)) { setError('Password must have 1 Digit'); return; }
+        if (!/(?=.*?[#?!@$%^&*-])/.test(data.password)) { setError('Password must have 1 spacial character'); return; }
+        console.log(data);
         const formData = new FormData();
         formData.append('image', img);
+
         const imgbbUrl = `https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_imgbb_api}`;
         // signup now
-        signup(data.email, data.password)
-            .then(result => {
-                if (result?.user) {
-                    fetch(imgbbUrl, { method: "POST", body: formData })
-                        .then(res => res.json())
-                        .then(imgData => {
-                            if (imgData.success) {
-                                const image = imgData.data.display_url;
-                                updateUser(data.name, image)
-                                    .then(() => {
-                                        addUserToDB(image);
-                                    })
-                                    .catch(error => {
-                                        console.log('updateUserError', error);
-                                        setIsLoading(false);
-                                    })
-                            }
-                        })
-                }
-            })
-            .catch(error => {
-                if (error.message === "Firebase: Error (auth/email-already-in-use).") {
-                    setError("This Email has already used before. Try to login or forget password")
-                }
-                setIsLoading(false);
-            })
+        // signup(data.email, data.password)
+        //     .then(result => {
+        //         if (result?.user) {
+        //             fetch(imgbbUrl, { method: "POST", body: formData })
+        //                 .then(res => res.json())
+        //                 .then(imgData => {
+        //                     if (imgData.success) {
+        //                         const image = imgData.data.display_url;
+        //                         updateUser(data.name, image)
+        //                             .then(() => {
+        //                                 addUserToDB(image);
+        //                             })
+        //                             .catch(error => {
+        //                                 console.log('updateUserError', error);
+        //                                 setIsLoading(false);
+        //                             })
+        //                     }
+        //                 })
+        //         }
+        //     })
+        //     .catch(error => {
+        //         if (error.message === "Firebase: Error (auth/email-already-in-use).") {
+        //             setError("This Email has already used before. Try to login or forget password")
+        //         }
+        //         setIsLoading(false);
+        //     })
 
         const addUserToDB = (image) => {
             const userInfo = {
@@ -137,6 +159,9 @@ const Signup = () => {
                                     :
                                     <FaEye />
                             }
+                        </div>
+                        <div className='absolute  right-2 top-2.5 text-warning bg-primary/20 rounded-full cursor-pointer' onClick={showPasswordInformation}>
+                            <BsInfoLg />
                         </div>
                     </div>
 

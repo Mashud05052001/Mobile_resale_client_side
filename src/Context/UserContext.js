@@ -32,6 +32,7 @@ const UserContext = ({ children }) => {
     }
     const logout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('secretCode');
         return signOut(auth);
     }
 

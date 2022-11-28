@@ -25,7 +25,6 @@ const Authentications = () => {
 
     // userinfo added while login vie google and github
     const addUserToDB = (user, from) => {
-        console.log(user)
         const userInfo = {
             name: user?.displayName,
             email: user?.email,
@@ -50,7 +49,7 @@ const Authentications = () => {
         event.preventDefault();
         googleJoin()
             .then(data => {
-                console.log(data.user)
+                // console.log(data.user)
                 if (data?.user) {
                     setJwtTokenEmail(data?.user?.email);
                     addUserToDB(data.user, data?.user?.reloadUserInfo?.providerUserInfo[0]?.providerId);

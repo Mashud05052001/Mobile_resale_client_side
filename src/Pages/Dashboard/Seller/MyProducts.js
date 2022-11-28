@@ -5,45 +5,72 @@ import { useAuser } from '../../../CustomHook/useAuser';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import toast from 'react-hot-toast';
 import Loading2 from '../../../Shared/Amination/Loading2';
+import Swal from 'sweetalert2';
 
 const MyProducts = () => {
-    const { user } = useContext(AuthContext);
     const [deleteLoading, setDeleteLoading] = useState(false);
-    const sellerInfo = useAuser(user?.email, user?.providerData[0]?.providerId)
-    const sellerId = sellerInfo?._id;
-    const url = `${process.env.REACT_APP_server_url}/allPhones?id=${sellerId}`;
+    const url = `${process.env.REACT_APP_server_url}/allPhones?id=${localStorage.getItem('secretCode')}`;
     const { data: AllProducts = [], isLoading, refetch } = useQuery({
-        queryKey: ['users', sellerInfo],
+        queryKey: ['users'],
         queryFn: () => fetch(url, {
             headers: {
-                authorization: `bearer ${localStorage.getItem('token')}`,
-            },
+                authorization: `bearer ${localStorage.getItem('token')}`
+            }
         }).then(res => res.json())
     })
+    // console.log(AllProducts);
     const handleDelete = id => {
-        setDeleteLoading(true);
-        const confirm = window.confirm("Are you sure to delete this product?")
-        if (confirm) {
-            const url = `${process.env.REACT_APP_server_url}/allPhones?id=${id}`;
-            console.log(url)
-            fetch(url, {
-                method: "DELETE",
-                headers: {
-                    authorization: `bearer ${localStorage.getItem('token')}`
-                }
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.acknowledged) {
-                        refetch();
-                        setDeleteLoading(false);
-                        toast.success(`You have seccessfully delete this product`);
+        Swal.fire({
+            title: 'Do you really want to delete this item?',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                setDeleteLoading(true);
+                const url = `${process.env.REACT_APP_server_url}/allPhones?id=${id}`;
+                console.log(url)
+                fetch(url, {
+                    method: "DELETE",
+                    headers: {
+                        authorization: `bearer ${localStorage.getItem('token')}`
                     }
                 })
-
-
-
-        }
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.acknowledged) {
+                            refetch();
+                            setDeleteLoading(false);
+                            toast.success(`You have seccessfully delete this product`);
+                        }
+                    })
+            }
+        })
+    }
+    const handlePromot = id => {
+        Swal.fire({
+            title: 'Do you really want to promot this item?',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`${process.env.REACT_APP_server_url}/allPhones?promot=${id}`, {
+                    method: "PATCH",
+                    headers: {
+                        authorization: `bearer ${localStorage.getItem('token')}`
+                    }
+                })
+                    .then(res => res.json())
+                    .then(result => {
+                        if (result.acknowledged) {
+                            toast.success('You have successfully promot an item')
+                            refetch();
+                        }
+                    })
+            }
+        })
     }
     return (
         <div>
@@ -64,6 +91,7 @@ const MyProducts = () => {
                             <th>Name</th>
                             <th>Upload Date</th>
                             <th>Upload Time</th>
+                            <th>Status</th>
                             <th>Delete</th>
                         </tr>
                     </thead>
@@ -87,6 +115,16 @@ const MyProducts = () => {
                                     </td>
                                     <td>{product?.uploadDate.slice(0, 12)}</td>
                                     <td>{product?.uploadDate.slice(14)}</td>
+                                    <td>
+                                        {
+                                            product?.promoteStatus ?
+                                                <p className='text-green-600 -ml-3'>Promoted</p>
+                                                :
+                                                <button className='-ml-7 btn btn-xs bg-primary text-black rounded-sm border-none bg-opacity-50 hover:bg-opacity-100 hover:bg-primary' onClick={() => handlePromot(product._id)}>
+                                                    Promote Now
+                                                </button>
+                                        }
+                                    </td>
                                     <th>
 
                                         <RiDeleteBinLine className='w-5 cursor-pointer h-5 text-red-600 ml-2' onClick={() => handleDelete(product._id)} />

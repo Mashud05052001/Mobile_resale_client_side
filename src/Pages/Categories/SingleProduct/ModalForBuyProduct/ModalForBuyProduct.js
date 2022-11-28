@@ -1,17 +1,33 @@
 import React from 'react';
 import toast from 'react-hot-toast';
 
-const ModalForBuyProduct = ({ userName, userEmail, phone, price, setShowModal }) => {
+const ModalForBuyProduct = ({ userName, userEmail, phone, price, setShowModal, phoneId, userId }) => {
     // console.log(userName, userEmail, phone, price)
     const handleSubmit = event => {
         event.preventDefault();
         const form = event.target;
         const information = {
-            userName, userEmail, phone, price, number: form.number.value, location: form.location.value
+            userName, userEmail, userId, phone, phoneId, price, number: form.number.value, location: form.location.value, soldStatus: false,
         }
-        console.log(information)
-        toast.success('You have successfully placed a order');
-        setShowModal(null);
+        fetch(`${process.env.REACT_APP_server_url}/orders`, {
+            method: "POST",
+            headers: {
+                authorization: `bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(information)
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.acknowledged) {
+                    toast.success('You have successfully placed a order');
+                    setShowModal(null);
+                }
+                else if (data.message === 'alreadyAdded') {
+                    toast.error("You cann't order same item multiple time. Please check your order list to buy.");
+                    setShowModal(null);
+                }
+            })
     }
     return (
         <div>

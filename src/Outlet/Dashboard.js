@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { AuthContext } from '../Context/UserContext';
 import { useRole } from '../CustomHook/useRole';
+import Footer from '../Shared/Footer/Footer';
 import Navbar from '../Shared/Navbar/Navbar';
 
 const Dashboard = () => {
@@ -11,7 +12,7 @@ const Dashboard = () => {
     // console.log(role, isRoleLoading)
 
     return (
-        <section>
+        <section className='relative'>
             <Navbar />
             <div className='px-5 border-2 rounded-xl mb-5'>
                 {
@@ -66,8 +67,9 @@ const Dashboard = () => {
                     </div>
                 }
             </div>
-            <div>
+            <div >
                 <Outlet />
+
             </div>
         </section>
     );
