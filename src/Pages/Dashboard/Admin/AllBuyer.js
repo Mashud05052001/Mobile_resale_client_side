@@ -1,21 +1,42 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query'
 import { RiDeleteBinLine } from 'react-icons/ri';
 import Loading2 from '../../../Shared/Amination/Loading2';
+import toast from 'react-hot-toast';
 
 const AllBuyer = () => {
     const [allBuyer, setAllBuyer] = useState([]);
     const [buyerLoading, setBuyerLoading] = useState(true);
-    fetch(`${process.env.REACT_APP_server_url}/users?need=buyer`, {
-        headers: {
-            authorization: `bearer ${localStorage.getItem('token')}`
+    useEffect(() => {
+        fetch(`${process.env.REACT_APP_server_url}/users?need=buyer`, {
+            headers: {
+                authorization: `bearer ${localStorage.getItem('token')}`
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                setBuyerLoading(false);
+                setAllBuyer(data);
+            });
+    }, [])
+    const handleDelete = (id, username) => {
+        const confirm = window.confirm("Are you sure to delete this Buyer?");
+        const url = `${process.env.REACT_APP_server_url}/users?id=${id}`;
+        if (confirm) {
+            fetch(url, {
+                method: "DELETE",
+                headers: {
+                    authorization: `bearer ${localStorage.getItem('token')}`
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.acknowledged) {
+                        toast.success(`You have seccessfully delete ${username}`);
+                    }
+                })
         }
-    })
-        .then(res => res.json())
-        .then(data => {
-            setBuyerLoading(false);
-            setAllBuyer(data);
-        });
+    }
 
     return (
         <div>
@@ -30,6 +51,7 @@ const AllBuyer = () => {
                                     <td>No</td>
                                     <th>Name</th>
                                     <th>E-Mail</th>
+                                    <th>Delete</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -41,7 +63,9 @@ const AllBuyer = () => {
                                             <td>
                                                 {buyer?.email ? buyer?.email : "null"}
                                             </td>
-
+                                            <td>
+                                                <RiDeleteBinLine className='w-5 cursor-pointer h-5 text-red-600 ml-2' onClick={() => handleDelete(buyer?._id, buyer?.name)} />
+                                            </td>
                                         </tr>)
                                 }
                             </tbody>

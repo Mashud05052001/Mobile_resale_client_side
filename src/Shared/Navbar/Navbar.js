@@ -33,7 +33,7 @@ const Navbar = () => {
                 <button className='rounded-md  xl:font-semibold  -mx-3  px-2 lg:px-7 '>Blogs</button>
             </NavLink>
         </li>
-        <li className='px-1'>
+        {/* <li className='px-1'>
             <NavLink to='/about' className={({ isActive }) => isActive ? 'activeNavbarItems' : 'inActiveNavbarItems '}>
                 <button className='rounded-md  xl:font-semibold  -mx-3  px-2 lg:px-7 '>About</button>
             </NavLink>
@@ -42,7 +42,7 @@ const Navbar = () => {
             <NavLink to='/contactUs' className={({ isActive }) => isActive ? 'activeNavbarItems' : 'inActiveNavbarItems '}>
                 <button className='rounded-md  xl:font-semibold  -mx-3  px-2 lg:px-7 '>Contact Us</button>
             </NavLink>
-        </li>
+        </li> */}
         {
             !user &&
             <li className='px-1'>
@@ -73,7 +73,7 @@ const Navbar = () => {
                 <button className='rounded-md  -mx-3  px-2'>Blogs</button>
             </NavLink>
         </li>
-        <li className='px-1'>
+        {/* <li className='px-1'>
             <NavLink to='/about' onClick={() => setOpen(false)} >
                 <button className='rounded-md  -mx-3  px-2'>About</button>
             </NavLink>
@@ -82,7 +82,7 @@ const Navbar = () => {
             <NavLink to='/contactUs' onClick={() => setOpen(false)} >
                 <button className='rounded-md  -mx-3  px-2'>Contact Us</button>
             </NavLink>
-        </li>
+        </li> */}
         {
             !user &&
             <li className='px-1'>

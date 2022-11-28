@@ -52,6 +52,7 @@ const AddProduct = () => {
                     data["sellerName"] = sellerInfo?.name;
                     data["sellerDbId"] = sellerInfo?._id;
                     data['categoryId'] = categoryId;
+                    data['report'] = "0";
                     console.log(data)
                     fetch(`${process.env.REACT_APP_server_url}/allPhones`, {
                         method: "POST",

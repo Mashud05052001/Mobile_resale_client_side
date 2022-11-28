@@ -19,6 +19,9 @@ import MyBuyers from "../Pages/Dashboard/Seller/MyBuyers";
 import MyProducts from "../Pages/Dashboard/Seller/MyProducts";
 import AllProducts from "../Pages/Categories/AllProducts/AllProducts";
 import SingleProduct from "../Pages/Categories/SingleProduct/SingleProduct";
+import PrivateRouter from "./PrivateRouter";
+import PrivateAdmin from "./PrivateAdmin";
+import PrivateSeller from "./PrivateSeller";
 
 
 export const router = createBrowserRouter([
@@ -31,14 +34,14 @@ export const router = createBrowserRouter([
                 path: '/',
                 element: <Home />
             },
-            {
-                path: '/about',
-                element: <Blogs />,
-            },
-            {
-                path: '/contactUs',
-                element: <Blogs />,
-            },
+            // {
+            //     path: '/about',
+            //     element: <Blogs />,
+            // },
+            // {
+            //     path: '/contactUs',
+            //     element: <Blogs />,
+            // },
             {
                 path: '/blogs',
                 element: <Blogs />
@@ -77,55 +80,58 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/categories/:id',
-                element: <SingleCategoryAllAdds />,
+                element: <PrivateRouter><SingleCategoryAllAdds /></PrivateRouter>,
             },
             {
                 path: '/categories/singlePhone/:id',
-                element: <SingleProduct />,
+                element: <PrivateRouter><SingleProduct /></PrivateRouter>,
             },
         ]
     },
     {
         path: '/dashboard',
-        element: <Dashboard />,
+        element: <PrivateRouter><Dashboard /></PrivateRouter>,
         errorElement: <ErrorPage />,
         children: [
             {
                 path: '/dashboard',
                 // element: <AllSeller />
-                element: <MyProducts />
+                // element: <MyProducts />
             },
+            // admin items
             {
                 path: '/dashboard/allSeller',
-                element: <AllSeller />
+                element: <PrivateAdmin><AllSeller /></PrivateAdmin>
             },
             {
                 path: '/dashboard/allBuyer',
-                element: <AllBuyer />
+                element: <PrivateAdmin><AllBuyer /></PrivateAdmin>
             },
             {
                 path: '/dashboard/reportedItems',
-                element: <ReportedItems />
+                element: <PrivateAdmin><ReportedItems /></PrivateAdmin>
             },
+            // normal user items
             {
                 path: '/dashboard/orders',
-                element: <MyOrders />
+                element: <PrivateRouter><MyOrders /></PrivateRouter>
             },
             {
                 path: '/dashboard/wishlist',
-                element: <MyWishList />
+                element: <PrivateRouter><MyWishList /></PrivateRouter>
             },
+            // seller items
             {
                 path: '/dashboard/addProduct',
-                element: <AddProduct />
+                element: <PrivateSeller><AddProduct /></PrivateSeller>
             },
             {
                 path: '/dashboard/buyers',
-                element: <MyBuyers />
+                element: <PrivateSeller><MyBuyers /></PrivateSeller>
             },
             {
                 path: '/dashboard/products',
-                element: <MyProducts />
+                element: <PrivateSeller><MyProducts /></PrivateSeller>
             },
 
         ]

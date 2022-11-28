@@ -6,7 +6,7 @@ const auth = getAuth(app);
 export const AuthContext = createContext();
 const UserContext = ({ children }) => {
     const [user, setUser] = useState();
-    // console.log(user);
+    console.log(user);
     // console.log(user?.reloadUserInfo?.providerUserInfo[0]?.providerId)
     const [loading, setLoading] = useState(true);
     const googleProvider = new GoogleAuthProvider();
