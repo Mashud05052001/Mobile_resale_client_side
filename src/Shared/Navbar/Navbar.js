@@ -9,7 +9,7 @@ import { AuthContext } from '../../Context/UserContext';
 
 const Navbar = () => {
     const { user, loading, logout } = useContext(AuthContext);
-    console.log(user?.photoURL)
+    // console.log(user?.photoURL)
     const [isOpen, setOpen] = useState(false)
     const handleLogout = () => {
         logout().then(result => result).catch(error => console.log(error))

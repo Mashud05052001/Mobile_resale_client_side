@@ -43,7 +43,7 @@ const AllProducts = () => {
                         <div className=' grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-8 md:gap-y-16 '>
                             {
                                 (allPhone.length > 0) &&
-                                allPhone.map(phone => <AllPhones key={phone?._id} phoneInfo={phone} />)
+                                allPhone.map(phone => <AllPhones key={phone?._id} phoneInfo={phone} promoteIcon={true} />)
                             }
                         </div>
                     </>

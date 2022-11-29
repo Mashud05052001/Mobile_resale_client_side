@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
-const AllPhones = ({ phoneInfo }) => {
+const AllPhones = ({ phoneInfo, promoteIcon }) => {
     // console.log(phoneInfo)
     const [dataLoading, setDataLoading] = useState(true);
     const [sellerInfo, setSellerInfo] = useState([]);
@@ -17,7 +16,8 @@ const AllPhones = ({ phoneInfo }) => {
                 setDataLoading(false);
                 setSellerInfo(data);
             })
-    }, [])
+    }, [sellerDbId])
+    console.log(phoneInfo?.promoteStatus)
     return (
         <div className='py-5 pb-12 px-3  rounded-xl w-44 md:w-48 relative bg-primary/30 '>
             <p className='absolute top-0 left-[55px] md:left-[63px] text-red-800 bg-white rounded-b-xl font-medium px-4'>{sellingPrice}/=</p>
@@ -25,6 +25,12 @@ const AllPhones = ({ phoneInfo }) => {
                 sellerInfo?.status === 'verified' &&
                 <div title='Seller is Verified'>
                     <img src="https://i.ibb.co/7gs9d4q/correct-removebg-preview.png" className='absolute w-6 h-6 -top-1.5 -right-1.5  rounded-full bg-white' alt="" />
+                </div>
+            }
+            {
+                phoneInfo?.promoteStatus && promoteIcon &&
+                <div title='Promoted Product'>
+                    <img src="https://i.ibb.co/F8H1j80/gold-medal.png" className='absolute w-9 h-9 top-10 right-3  rounded-full' alt="" />
                 </div>
             }
 
