@@ -4,12 +4,13 @@ import { useLocation, Navigate } from "react-router-dom";
 import { AuthContext } from '../Context/UserContext';
 import { useRole } from '../CustomHook/useRole';
 import Loading2 from '../Shared/Amination/Loading2';
+import MobileLoading from '../Shared/Amination/MobileLoading';
 const PrivateSeller = ({ children }) => {
     const { user, loading, logout } = useContext(AuthContext);
     const [role, isRoleLoading] = useRole(user?.email, user?.reloadUserInfo?.providerUserInfo[0]?.providerId);
     const location = useLocation();
     if (loading || isRoleLoading) {
-        return <Loading2 />
+        return <MobileLoading />
     }
     if (user && role === 'seller') {
         return children

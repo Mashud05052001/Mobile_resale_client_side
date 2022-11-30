@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
-import Loading2 from '../../../Shared/Amination/Loading2';
+import MobileLoading from '../../../Shared/Amination/MobileLoading';
 import AllPhones from '../../../Shared/PhonesShow/AllPhones';
 
 const AllProducts = () => {
@@ -36,7 +36,7 @@ const AllProducts = () => {
 
             {
                 dataLoading ?
-                    <Loading2 />
+                    <MobileLoading />
                     :
                     <>
                         <h1 className='text-center mb-9 text-3xl -mt-4 md:hidden bg-red-600 text-gradient'>All Products</h1>

@@ -17,7 +17,7 @@ const AllPhones = ({ phoneInfo, promoteIcon }) => {
                 setSellerInfo(data);
             })
     }, [sellerDbId])
-    console.log(phoneInfo?.promoteStatus)
+    // console.log(phoneInfo?.soldStatus)
     return (
         <div className='py-5 pb-12 px-3  rounded-xl w-44 md:w-48 relative bg-primary/30 '>
             <p className='absolute top-0 left-[55px] md:left-[63px] text-red-800 bg-white rounded-b-xl font-medium px-4'>{sellingPrice}/=</p>
@@ -44,9 +44,20 @@ const AllPhones = ({ phoneInfo, promoteIcon }) => {
                     <p>{area}, {state}</p>
                 </div>
             </div>
-            <Link to={`/categories/singlePhone/${_id}`}>
-                <button className='btn btn-sm bg-primary/40 border-none  rounded-t-none hover:bg-primary/80 absolute bottom-0 w-full right-0 text-gray-800'>Detailes</button>
-            </Link>
+            <>
+                {
+                    phoneInfo?.soldStatus ?
+                        <Link >
+                            <button className='btn btn-sm bg-primary/40 hover:bg-primary/40 border-none  rounded-t-none absolute bottom-0 w-full right-0 text-red-700 opacity-60'>Already Purchased</button>
+                        </Link>
+                        : <Link to={`/categories/singlePhone/${_id}`}>
+                            <button className='btn btn-sm bg-primary/40 border-none  rounded-t-none hover:bg-primary/80 absolute bottom-0 w-full right-0 text-gray-800'
+                            >Detailes</button>
+                        </Link>
+
+
+                }
+            </>
 
         </div>
     );

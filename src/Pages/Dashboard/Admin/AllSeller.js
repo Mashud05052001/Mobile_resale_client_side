@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { RiDeleteBinLine } from 'react-icons/ri';
 import toast from 'react-hot-toast';
 import Loading2 from '../../../Shared/Amination/Loading2';
+import MobileLoading from '../../../Shared/Amination/MobileLoading';
 
 const AllSeller = () => {
     // const [allSeller,setAllSeller] = useState([]);
@@ -60,7 +61,7 @@ const AllSeller = () => {
         <div>
             {
                 isLoading ?
-                    <Loading2 />
+                    <MobileLoading />
                     :
                     <>
                         {

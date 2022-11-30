@@ -1,13 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../../../Context/UserContext';
-import { useAuser } from '../../../CustomHook/useAuser'
-import Loading2 from '../../../Shared/Amination/Loading2';
+import React, { useState } from 'react';
+import { BsInfoLg } from 'react-icons/bs';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import Swal from 'sweetalert2';
+import MobileLoading from '../../../Shared/Amination/MobileLoading';
+import Payment from '../Payment';
 
 
 const MyOrders = () => {
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
+    const [passedInfoToModal, setPassedInfoToModal] = useState({});
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
             confirmButton: 'btn btn-success text-white',
@@ -24,27 +26,24 @@ const MyOrders = () => {
             }
         }).then(res => res.json())
     })
-    // useEffect(() => {
-    //     fetch(`${process.env.REACT_APP_server_url}/orders?id=${userInfo?._id}`, {
-    //         headers: {
-    //             authorization: `bearer ${localStorage.getItem('token')}`
-    //         }
-    //     })
-    //         .then(res => res.json())
-    //         .then(data => {
-    //             console.log(data)
-    //             setAllOrders(data);
-    //             setIsLoading(false);
-    //             if (data.acknowledged) {
-    //                 console.log(data)
-    //             }
-    //         })
-
-    // }, [userInfo])
+    const showTransitionId = (item) => {
+        console.log(item)
+        Swal.fire({
+            title: item?.phone,
+            html:
+                `<p>Price : ${item?.price}</p><p>Transaction ID : ${item?.transactionId}</p>`,
+            showClass: {
+                popup: ''
+            },
+            hideClass: {
+                popup: ''
+            }
+        })
+    }
     const ordersCount = allOrders.length;
-    // console.log(allOrders)
-    const handleStatusChange = () => {
-        console.log(1)
+    const handleStatusChange = (info) => {
+        setPassedInfoToModal(info);
+        setShowPaymentModal(true);
     }
     const handleDelete = (itemId, itemName) => {
         swalWithBootstrapButtons.fire({
@@ -82,7 +81,7 @@ const MyOrders = () => {
         <div>
             {
                 isLoading ?
-                    <Loading2 />
+                    <MobileLoading />
                     :
                     <>
                         {
@@ -117,14 +116,25 @@ const MyOrders = () => {
                                                                 :
                                                                 <td>
 
-                                                                    <button className='btn btn-xs -ml-5 btn-primary '
+                                                                    {/* <button className='btn btn-xs -ml-5 btn-primary '
                                                                         onClick={() => handleStatusChange(item?._id, item?.name)}>
                                                                         Purchased Now
-                                                                    </button>
+                                                                    </button> */}
+                                                                    <label htmlFor="payment-modal" className='btn btn-xs -ml-5 btn-primary'
+                                                                        onClick={() => handleStatusChange(item)}>
+                                                                        Purchased Now
+                                                                    </label>
                                                                 </td>
                                                         }
-                                                        <td>
-                                                            <RiDeleteBinLine className='w-5 cursor-pointer h-5 text-red-600 ml-2' onClick={() => handleDelete(item?._id, item?.phone)} />
+                                                        <td >
+                                                            {
+                                                                item?.transactionId ?
+                                                                    <div className=' right-2 top-2.5 text-warning ml-2 rounded-full cursor-pointer' onClick={() => showTransitionId(item)}>
+                                                                        <BsInfoLg />
+                                                                    </div>
+                                                                    :
+                                                                    <RiDeleteBinLine className='w-5 cursor-pointer h-5 text-red-600 ml-2' onClick={() => handleDelete(item?._id, item?.phone)} />
+                                                            }
                                                         </td>
                                                     </tr>)
                                             }
@@ -133,6 +143,10 @@ const MyOrders = () => {
                                 </div>
                         }
                     </>
+            }
+            {
+                showPaymentModal &&
+                <Payment info={passedInfoToModal} wiseList={false} refetch={refetch} />
             }
         </div>
     );

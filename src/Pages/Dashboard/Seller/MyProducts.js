@@ -6,6 +6,7 @@ import { RiDeleteBinLine } from 'react-icons/ri';
 import toast from 'react-hot-toast';
 import Loading2 from '../../../Shared/Amination/Loading2';
 import Swal from 'sweetalert2';
+import MobileLoading from '../../../Shared/Amination/MobileLoading';
 
 const MyProducts = () => {
     const [deleteLoading, setDeleteLoading] = useState(false);
@@ -77,7 +78,7 @@ const MyProducts = () => {
             {
                 (isLoading || deleteLoading) &&
                 <div >
-                    <Loading2 />
+                    <MobileLoading />
                 </div>
 
             }
@@ -113,14 +114,14 @@ const MyProducts = () => {
                                     <td>
                                         {product?.name}
                                     </td>
-                                    <td>{product?.uploadDate.slice(0, 12)}</td>
-                                    <td>{product?.uploadDate.slice(14)}</td>
+                                    <td>{product?.uploadDate?.slice(0, 12)}</td>
+                                    <td>{product?.uploadDate?.slice(14)}</td>
                                     <td>
                                         {
                                             product?.promoteStatus ?
                                                 <p className='text-green-600 -ml-3'>Promoted</p>
                                                 :
-                                                <button className='-ml-7 btn btn-xs bg-primary text-black rounded-sm border-none bg-opacity-50 hover:bg-opacity-100 hover:bg-primary' onClick={() => handlePromot(product._id)}>
+                                                <button className='-ml-7 btn btn-xs bg-primary text-black rounded-[5px]  border-none bg-opacity-50 hover:bg-opacity-100 hover:bg-primary' onClick={() => handlePromot(product._id)}>
                                                     Promote Now
                                                 </button>
                                         }

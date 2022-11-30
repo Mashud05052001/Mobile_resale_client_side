@@ -9,6 +9,7 @@ import Loading from '../../Shared/Amination/Loading';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useJwtToken } from '../../CustomHook/useJwtToken';
 import Swal from 'sweetalert2';
+import Loading2 from '../../Shared/Amination/Loading2';
 
 const Signup = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -24,7 +25,6 @@ const Signup = () => {
     if (token) {
         setIsLoading(false);
         navigate(from, { replace: true });
-        toast.success('You Have successfully SignUp')
     }
     const showPasswordInformation = () => {
         Swal.fire({
@@ -42,7 +42,7 @@ const Signup = () => {
     const onSubmit = data => {
         const img = data.img[0];
         setError('');
-        // setIsLoading(true);
+        setIsLoading(true);
         // creating imageURL
 
         if (data.password !== data.confirmPassword) { setError('Password Doesn\'t Matched'); return; }
@@ -56,32 +56,32 @@ const Signup = () => {
 
         const imgbbUrl = `https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_imgbb_api}`;
         // signup now
-        // signup(data.email, data.password)
-        //     .then(result => {
-        //         if (result?.user) {
-        //             fetch(imgbbUrl, { method: "POST", body: formData })
-        //                 .then(res => res.json())
-        //                 .then(imgData => {
-        //                     if (imgData.success) {
-        //                         const image = imgData.data.display_url;
-        //                         updateUser(data.name, image)
-        //                             .then(() => {
-        //                                 addUserToDB(image);
-        //                             })
-        //                             .catch(error => {
-        //                                 console.log('updateUserError', error);
-        //                                 setIsLoading(false);
-        //                             })
-        //                     }
-        //                 })
-        //         }
-        //     })
-        //     .catch(error => {
-        //         if (error.message === "Firebase: Error (auth/email-already-in-use).") {
-        //             setError("This Email has already used before. Try to login or forget password")
-        //         }
-        //         setIsLoading(false);
-        //     })
+        signup(data.email, data.password)
+            .then(result => {
+                if (result?.user) {
+                    fetch(imgbbUrl, { method: "POST", body: formData })
+                        .then(res => res.json())
+                        .then(imgData => {
+                            if (imgData.success) {
+                                const image = imgData.data.display_url;
+                                updateUser(data.name, image)
+                                    .then(() => {
+                                        addUserToDB(image);
+                                    })
+                                    .catch(error => {
+                                        console.log('updateUserError', error);
+                                        setIsLoading(false);
+                                    })
+                            }
+                        })
+                }
+            })
+            .catch(error => {
+                if (error.message === "Firebase: Error (auth/email-already-in-use).") {
+                    setError("This Email has already used before. Try to login or forget password")
+                }
+                setIsLoading(false);
+            })
 
         const addUserToDB = (image) => {
             const userInfo = {
@@ -101,10 +101,12 @@ const Signup = () => {
                 .then(res => res.json())
                 .then(data => {
                     if (data.result.acknowledged) {
+                        toast.success('You Have successfully SignUp')
                         setJwtTokenEmail(data.email);
                     }
                 })
         }
+
 
 
     }

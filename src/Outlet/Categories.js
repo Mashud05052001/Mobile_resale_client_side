@@ -2,10 +2,10 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query'
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import Loading from '../Shared/Amination/Loading';
-import Loading2 from '../Shared/Amination/Loading2';
 import Navbar from '../Shared/Navbar/Navbar';
 import '../Shared/Navbar/navbar.css'
 import Footer from '../Shared/Footer/Footer';
+import MobileLoading from '../Shared/Amination/MobileLoading';
 const Categories = () => {
     const { data: categories = [], isLoading, refetch } = useQuery({
         queryKey: ['categories'],
@@ -22,7 +22,7 @@ const Categories = () => {
             <section className='mb-10'>
                 {
                     isLoading ?
-                        <Loading2 />
+                        <div></div>
                         :
                         <div className=''>
                             <div className='flex flex-wrap'>

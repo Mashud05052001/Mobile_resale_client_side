@@ -6,16 +6,20 @@ import { AuthContext } from '../../Context/UserContext';
 import toast from 'react-hot-toast'
 import Loading from '../../Shared/Amination/Loading';
 import { useJwtToken } from '../../CustomHook/useJwtToken';
+import Swal from 'sweetalert2';
 
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [forgetEmail, setForgetEmail] = useState('');
+    const [fprgetEmailError, setForgetEmailError] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
-    const { login } = useContext(AuthContext);
+    const { login, resetPassword } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors } } = useForm();
     // working on jwt
     const [jwtTokenEmail, setJwtTokenEmail] = useState(null);
@@ -23,13 +27,13 @@ const Login = () => {
     if (token) {
         setIsLoading(false)
         navigate(from, { replace: true });
-        toast.success('You have successfully login our website')
     }
     const onSubmit = (data) => {
         setError("");
         setIsLoading(true);
         login(data.email, data.password)
             .then(result => {
+                toast.success('You have successfully login our website')
                 setJwtTokenEmail(result.user.email);
             })
             .catch(error => {
@@ -46,6 +50,25 @@ const Login = () => {
                 }
                 setIsLoading(false);
             })
+    }
+
+    // console.log(forgetEmail.endsWith('.com'))
+    const handleForget = event => {
+        setForgetEmail(event.target.value);
+    }
+    const handleResetPassword = () => {
+
+        resetPassword(forgetEmail)
+            .then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Check Your Email Address To Reset Your Password',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                setShowModal(false);
+            })
+            .catch(error => setForgetEmailError(error))
     }
     return (
         <div>
@@ -91,7 +114,7 @@ const Login = () => {
                             error && <span>Error: {error}</span>
                         }
                     </p>
-                    <p className=" link link-hover">Forgot password?</p>
+                    <label htmlFor="forget-password" onClick={() => setShowModal(true)} className="link link-hover">Forgot password?</label>
                 </div>
                 <button type="submit" className='btn text-white btn-secondary mt-5 w-full'>
                     Login Here
@@ -99,6 +122,26 @@ const Login = () => {
 
 
             </form>
+            {
+                showModal &&
+                <>
+                    <input type="checkbox" id="forget-password" className="modal-toggle" />
+                    <div className="modal">
+                        <div className="modal-box  relative">
+                            <label htmlFor="forget-password" className="btn btn-sm btn-circle absolute right-2 top-2 bg-secondary/80 border-0 text-white hover:bg-secondary">✕</label>
+                            <h3 className="text-lg font-bold ml-1">Please Provide Your Email Address</h3>
+                            <input type="text" className='input input-bordered mt-6 w-full'
+                                onBlur={handleForget}
+                            />
+                            <button
+                                onClick={handleResetPassword}
+                                className='mt-8 btn btn-secondary text-white float-right md:float-left'
+                            >Reset Password</button>
+                            <p className='text-sm absolute right-7 bottom-20 text-red-600'>{fprgetEmailError}</p>
+                        </div>
+                    </div>
+                </>
+            }
         </div>
 
 

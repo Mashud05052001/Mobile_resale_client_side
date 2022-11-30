@@ -22,6 +22,7 @@ import SingleProduct from "../Pages/Categories/SingleProduct/SingleProduct";
 import PrivateRouter from "./PrivateRouter";
 import PrivateAdmin from "./PrivateAdmin";
 import PrivateSeller from "./PrivateSeller";
+import Payment from "../Pages/Dashboard/Payment";
 
 
 export const router = createBrowserRouter([

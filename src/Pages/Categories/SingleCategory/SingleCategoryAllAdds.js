@@ -3,6 +3,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Loading2 from '../../../Shared/Amination/Loading2';
 import AllPhones from '../../../Shared/PhonesShow/AllPhones';
+import MobileLoading from '../../../Shared/Amination/MobileLoading';
 
 const SingleCategoryAllAdds = () => {
     const id = useParams().id;
@@ -28,7 +29,7 @@ const SingleCategoryAllAdds = () => {
         <div>
             {
                 dataLoading ?
-                    <Loading2 />
+                    <MobileLoading />
                     :
                     <>
                         {
@@ -52,7 +53,7 @@ const SingleCategoryAllAdds = () => {
 
                                     {
                                         dataLoading ?
-                                            <Loading2 />
+                                            <MobileLoading />
                                             :
                                             <>
                                                 <h1 className='text-center mb-9 text-3xl -mt-4 md:hidden bg-red-600 text-gradient'>All Products</h1>

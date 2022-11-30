@@ -2,7 +2,10 @@ import { useQueries } from '@tanstack/react-query';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Loading2 from '../../Shared/Amination/Loading2';
+import MobileLoading from '../../Shared/Amination/MobileLoading';
 import AdvertisedItems from './AdvertisedItem/AdvertisedItems';
+import ComplainSection from './ComplainSection';
+import FaqSection from './FaqSection';
 import HomeBanner from './HomeBanner/HomeBanner';
 import HomeCategories from './HomeCategories.js/HomeCategories';
 
@@ -56,16 +59,18 @@ const Home = () => {
 
 
     return (
-        <div>
+        <div className=''>
             {
                 (categories?.isLoading || allPromotePhone?.isLoading)
                     ?
-                    <Loading2 />
+                    <MobileLoading />
                     :
                     <>
                         <HomeBanner />
                         <HomeCategories categories={categories.data} />
                         <AdvertisedItems allPromotePhone={allPromotePhone.data} />
+                        <FaqSection />
+                        <ComplainSection />
                     </>
             }
 

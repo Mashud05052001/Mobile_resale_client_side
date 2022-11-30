@@ -5,9 +5,13 @@ import { useAuser } from '../../../CustomHook/useAuser'
 import Loading2 from '../../../Shared/Amination/Loading2';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import Swal from 'sweetalert2';
+import MobileLoading from '../../../Shared/Amination/MobileLoading';
+import Payment from '../Payment';
 
 
 const MyWishList = () => {
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
+    const [passedInfoToModal, setPassedInfoToModal] = useState({});
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
             confirmButton: 'btn btn-success text-white',
@@ -37,8 +41,9 @@ const MyWishList = () => {
 
     }, [reloadUseEffect])
     const wisesCount = allWiseList.length;
-    const handleStatusChange = () => {
-        console.log(1)
+    const handleStatusChange = (info) => {
+        setPassedInfoToModal(info);
+        setShowPaymentModal(true);
     }
     const handleDelete = (itemId, itemName) => {
         swalWithBootstrapButtons.fire({
@@ -76,7 +81,7 @@ const MyWishList = () => {
         <div>
             {
                 isLoading ?
-                    <Loading2 />
+                    <MobileLoading />
                     :
                     <>
                         {
@@ -109,10 +114,10 @@ const MyWishList = () => {
                                                                 :
                                                                 <td>
 
-                                                                    <button className='btn btn-xs -ml-5 btn-primary '
-                                                                        onClick={() => handleStatusChange(item?._id, item?.name)}>
+                                                                    <label htmlFor="payment-modal" className='btn btn-xs -ml-5 btn-primary'
+                                                                        onClick={() => handleStatusChange(item)}>
                                                                         Purchased Now
-                                                                    </button>
+                                                                    </label>
                                                                 </td>
                                                         }
                                                         <td>
@@ -125,6 +130,10 @@ const MyWishList = () => {
                                 </div>
                         }
                     </>
+            }
+            {
+                showPaymentModal &&
+                <Payment info={passedInfoToModal} wiseList={true} />
             }
         </div>
     );

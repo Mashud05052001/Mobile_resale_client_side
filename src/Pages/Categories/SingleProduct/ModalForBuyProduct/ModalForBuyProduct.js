@@ -1,13 +1,14 @@
 import React from 'react';
 import toast from 'react-hot-toast';
 
-const ModalForBuyProduct = ({ userName, userEmail, phone, price, setShowModal, phoneId, userId }) => {
+const ModalForBuyProduct = ({ userName, userEmail, phone, price, setShowModal, phoneId, userId, sellerInfo }) => {
     // console.log(userName, userEmail, phone, price)
     const handleSubmit = event => {
         event.preventDefault();
         const form = event.target;
         const information = {
             userName, userEmail, userId, phone, phoneId, price, number: form.number.value, location: form.location.value, soldStatus: false,
+            sellerId: sellerInfo?._id,
         }
         fetch(`${process.env.REACT_APP_server_url}/orders`, {
             method: "POST",

@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { RiDeleteBinLine } from 'react-icons/ri';
 import Loading2 from '../../../Shared/Amination/Loading2';
 import toast from 'react-hot-toast';
+import MobileLoading from '../../../Shared/Amination/MobileLoading';
 
 const AllBuyer = () => {
     const [allBuyer, setAllBuyer] = useState([]);
@@ -42,7 +43,7 @@ const AllBuyer = () => {
         <div>
             {
                 buyerLoading ?
-                    <Loading2 />
+                    <MobileLoading />
                     :
                     <div className="overflow-x-auto">
                         <table className="table w-full">

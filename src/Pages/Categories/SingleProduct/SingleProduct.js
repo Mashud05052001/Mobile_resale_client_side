@@ -10,6 +10,7 @@ import { MdOutlineReport } from 'react-icons/md';
 import ConfirmationModal from '../../../Shared/Modal/ConfirmationModal';
 import Swal from 'sweetalert2';
 import { useAuser } from '../../../CustomHook/useAuser';
+import MobileLoading from '../../../Shared/Amination/MobileLoading';
 
 const SingleProduct = () => {
     const [phoneInfo, setPhoneInfo] = useState({});
@@ -69,6 +70,7 @@ const SingleProduct = () => {
                 phone: name,
                 phoneId: phoneInfo?._id,
                 price: phoneInfo?.sellingPrice,
+                sellerId: sellerInfo?._id,
                 soldStatus: false,
             }
 
@@ -130,14 +132,14 @@ const SingleProduct = () => {
             })
         }
     }
-    // console.log(sellerInfo)
+    console.log(sellerInfo)
     // console.log(user?.email, user?.displayName)
     // console.log(phoneInfo)
     return (
         <>
             {
                 loading ?
-                    <Loading2 />
+                    <MobileLoading />
                     :
                     <section className=' border-primary/80 mb-20'>
                         {
@@ -218,7 +220,7 @@ const SingleProduct = () => {
             }
             {
                 showModal &&
-                <ModalForBuyProduct userName={user?.displayName} userEmail={user?.email}
+                <ModalForBuyProduct userName={user?.displayName} userEmail={user?.email} sellerInfo={sellerInfo}
                     phone={name} price={sellingPrice} setShowModal={setShowModal} phoneId={phoneInfo?._id} userId={customerInfo?._id}
                 />
             }

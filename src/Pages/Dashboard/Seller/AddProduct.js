@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../Context/UserContext';
 import { useAuser } from '../../../CustomHook/useAuser';
 import Loading2 from '../../../Shared/Amination/Loading2';
+import MobileLoading from '../../../Shared/Amination/MobileLoading';
 
 const AddProduct = () => {
     const { user } = useContext(AuthContext);
@@ -80,7 +81,7 @@ const AddProduct = () => {
             {
                 isLoading &&
                 <div>
-                    <Loading2 />
+                    <MobileLoading />
                 </div>
 
             }
